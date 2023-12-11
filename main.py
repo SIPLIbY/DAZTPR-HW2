@@ -117,7 +117,10 @@ def CuttinPlane(model, x):
     return model.objective_value 
  
  
-def main(): 
+def main():
+
+    print(123)
+
     start_time = time.time() 
  
     model = Model() 
