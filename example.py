@@ -83,7 +83,7 @@ def task_1():
     return model.objective_value
 
 print(f"TASK_1: {task_1()}")
-
+print(original_code())
 print(f"DIFFERENCE BETWEEN INTEGER AND CONTINUOUS VALUES", original_code() - task_1(), "\n")
 
 # TASK 2
@@ -97,8 +97,29 @@ def task_2():
     for i in V:
         model += xsum(x[j][i] for j in V - {i}) == 1
     model.optimize()
+
+    t = []
+
+    if model.num_solutions:
+        out.write('route with total distance %g found: ' % (model.objective_value))
+    for k in range(14):
+        if k not in t:
+            out.write(places[k])
+            t.append(k)
+            nc = k
+            while True:
+                nc = [i for i in V if x[nc][i].x >= 0.99][0]
+                out.write(' -> %s' % places[nc])
+                t.append(nc)
+                if nc == k:
+                    break
+            out.write('\n')
+
     return model.objective_value
 
-print("TASK_2: ", task_2())
+print(task_2())
+
+
+
 
 # TASK 3
