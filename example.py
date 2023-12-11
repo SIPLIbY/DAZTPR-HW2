@@ -81,6 +81,31 @@ if model.num_solutions:
 #### YOUR CODE HERE VVVVVVVVVVVVVVVVVV
 
 # TASK 1
+new_model = Model(solver_name=CBC)
+
+new_x = [[new_model.add_var() for j in V] for i in V]
+
+new_y = [new_model.add_var() for i in V]
+
+# objective function: minimize the distance
+new_model.objective = minimize(xsum(c[i][j]*new_x[i][j] for i in V for j in V))
+
+# constraint : leave each city only once
+for i in V:
+    new_model += xsum(new_x[i][j] for j in V - {i}) == 1
+
+# constraint : enter each city only once
+for i in V:
+    new_model += xsum(new_x[j][i] for j in V - {i}) == 1
+
+# subtour elimination
+for (i, j) in product(V - {0}, V - {0}):
+    if i != j:
+        new_model += new_y[i] - (n+1)*new_x[i][j] >= new_y[j]-n
+
+# optimizing
+model.optimize()
+
 
 # TASK 2
 
