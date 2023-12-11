@@ -65,12 +65,6 @@ for (i, j) in product(V - {0}, V - {0}):
 # optimizing
 model.optimize()
 
-print('\n###############################')
-print('###############################')
-print('###############################')
-print('###############################')
-print('###############################')
-
 
 # checking if a solution was found
 if model.num_solutions:
@@ -111,8 +105,13 @@ for (i, j) in product(V - {0}, V - {0}):
         new_model += new_y[i] - (n+1)*new_x[i][j] >= new_y[j]-n
 
 # optimizing
-model.optimize()
+new_model.optimize()
 
+
+print('MODEL = ', model.objective_value)
+print('NEW_MODEL = ', new_model.objective_value)
+
+print(model.objective_value - new_model.objective_value)
 
 # TASK 2
 

@@ -119,8 +119,6 @@ def CuttinPlane(model, x):
  
 def main():
 
-    print(123)
-
     start_time = time.time() 
  
     model = Model() 
