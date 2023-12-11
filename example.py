@@ -65,6 +65,13 @@ for (i, j) in product(V - {0}, V - {0}):
 # optimizing
 model.optimize()
 
+print('\n###############################')
+print('###############################')
+print('###############################')
+print('###############################')
+print('###############################')
+
+
 # checking if a solution was found
 if model.num_solutions:
     out.write('route with total distance %g found: %s'
