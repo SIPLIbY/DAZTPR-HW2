@@ -36,7 +36,7 @@ c = [[0 if i == j
 
 def original_code():
     model = Model(solver_name=CBC)
-
+    model.verbose = 0
     x = [[model.add_var(var_type=BINARY) for j in V] for i in V]
     y = [model.add_var() for i in V]
 
@@ -61,7 +61,7 @@ def original_code():
 # TASK 1
 def task_1():
     model = Model(solver_name=CBC)
-
+    model.verbose = 0
     x = [[model.add_var() for j in V] for i in V]
     y = [model.add_var() for i in V]
 
@@ -78,12 +78,22 @@ def task_1():
             model += y[i] - (n+1)*x[i][j] >= y[j]-n
 
     # optimizing
-    model.optimize()
+    model.optimize(relax = True)
     
     return model.objective_value
 
-print("DIFFERENCE BETWEEN INTEGER AND CONTINUOUS VALUES", original_code - task_1())
+print(f"TASK_1: {task_1()}")
+
+print(f"DIFFERENCE BETWEEN INTEGER AND CONTINUOUS VALUES", original_code() - task_1(), "\n")
 
 # TASK 2
+def task_2():
+    model = Model(solver_name=CBC)
+    model.verbose = 0
+
+
+
+
+
 
 # TASK 3
