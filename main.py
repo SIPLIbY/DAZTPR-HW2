@@ -4,25 +4,32 @@ from sys import stdout as out
 from networkx import minimum_cut, DiGraph 
 from mip import Model, xsum, BINARY, CBC, minimize 
  
-start_time = time.time() 
- 
-places = ['Antwerp','C-Mine', 'Ghent', 'Hasselt', 'Mechelen', 'Montagne de Bueren', 'Remouchamps'] 
- 
-dists = [[81, 52, 73, 23, 105, 124], 
-        [125, 13, 71, 38, 59], 
-        [114, 54, 139, 155], 
-        [61, 36, 57], 
-        [89, 107], 
-        [22], 
-        []] 
- 
-n, V = len(dists), set(range(len(dists))) 
-c = [[0 if i == j 
-      else dists[i][j-i-1] if j > i 
-      else dists[j][i-j-1] 
-      for j in V] for i in V] 
-for i in range(0,6): 
-    print(c[i]) 
+start_time = time.time()
+
+places = ['Antwerp','C-Mine', 'Ghent', 'Hasselt', 'Mechelen', 'Montagne de Bueren', 'Remouchamps']
+
+dists = [[83, 81, 113, 52, 42, 73, 44, 23, 91, 105, 90, 124, 57],
+        [161, 160, 39, 89, 151, 110, 90, 99, 177, 143, 193, 100],
+        [90, 125, 82, 13, 57, 71, 123, 38, 72, 59, 82],
+        [123, 77, 81, 71, 91, 72, 64, 24, 62, 63],
+        [51, 114, 72, 54, 69, 139, 105, 155, 62],
+        [70, 25, 22, 52, 90, 56, 105, 16],
+        [45, 61, 111, 36, 61, 57, 70],
+        [23, 71, 67, 48, 85, 29],
+        [74, 89, 69, 107, 36],
+        [117, 65, 125, 43],
+        [54, 22, 84],
+        [60, 44],
+        [97],
+        []]
+
+n, V = len(dists), set(range(len(dists)))
+c = [[0 if i == j
+      else dists[i][j-i-1] if j > i
+      else dists[j][i-j-1]
+      for j in V] for i in V]
+for i in range(0,6):
+    print(c[i])
  
 def Assigment(): 
     model = Model(solver_name=CBC) 
@@ -30,8 +37,8 @@ def Assigment():
     model.objective = minimize(xsum(c[i][j] * x[i][j] for i in V for j in V)) 
     for i in V: 
         model += xsum(x[i][j] for j in V - {i}) == 1 
-    for i in V: 
-        model += xsum(x[j][i] for j in V - {i}) == 1 
+    for i in V:
+        model += xsum(x[j][i] for j in V - {i}) == 1
     model.optimize() 
     return model.objective_value 
  
@@ -104,7 +111,7 @@ def CuttinPlane(model, x):
                 model += cp 
  
  
-        model.optimize(relax=True) 
+        model.optimize(relax=True)
         print(model.objective_value) 
         iter += 1 
         print('КОЛИЧЕСТВО ИТЕРАЦИЙ: ', iter) 
@@ -136,6 +143,6 @@ def main():
     print(model.objective_value) 
     Answer = CuttinPlane(model, x) 
     print('This Time worked def main: ', (time.time() - start_time)) 
- 
+    print("#####################################",Assigment())
  
 main()

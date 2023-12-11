@@ -90,10 +90,15 @@ print(f"DIFFERENCE BETWEEN INTEGER AND CONTINUOUS VALUES", original_code() - tas
 def task_2():
     model = Model(solver_name=CBC)
     model.verbose = 0
+    x = [[model.add_var(var_type=BINARY) for j in V] for i in V]
+    model.objective = minimize(xsum(c[i][j] * x[i][j] for i in V for j in V))
+    for i in V:
+        model += xsum(x[i][j] for j in V - {i}) == 1
+    for i in V:
+        model += xsum(x[j][i] for j in V - {i}) == 1
+    model.optimize()
+    return model.objective_value
 
-
-
-
-
+print("TASK_2: ", task_2())
 
 # TASK 3
